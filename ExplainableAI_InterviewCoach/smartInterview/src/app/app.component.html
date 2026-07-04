@@ -1,0 +1,73 @@
+<div class="app-shell">
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="brand">
+        <div class="brand-mark">
+          <span class="brand-dot"></span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Interview Prep <span class="accent">Studio</span></div>
+          <div class="brand-subtitle">Technical interview Sandbox</div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="stepper">
+        <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+          <div class="step-circle">1</div>
+          <span class="step-label">Upload</span>
+        </div>
+        <div class="step-line" [class.active]="currentStep > 1"></div>
+        <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+          <div class="step-circle">2</div>
+          <span class="step-label">Interview</span>
+        </div>
+        <div class="step-line" [class.active]="currentStep > 2"></div>
+        <div class="step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3">
+          <div class="step-circle">3</div>
+          <span class="step-label">Results</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <button class="nav-item" [class.nav-item-active]="currentStep === 1" (click)="goTo('/upload')">
+          <span class="nav-dot"></span>
+          <span>Resume Upload</span>
+        </button>
+        <button class="nav-item" [class.nav-item-active]="currentStep === 2" (click)="goTo('/interview')">
+          <span class="nav-dot"></span>
+          <span>Interview Arena</span>
+        </button>
+        <button class="nav-item" [class.nav-item-active]="currentStep === 3" (click)="goTo('/results')">
+          <span class="nav-dot"></span>
+          <span>Results & Feedback</span>
+        </button>
+      </nav>
+    </aside>
+
+    <main class="main-pane">
+      <router-outlet></router-outlet>
+    </main>
+
+    <section class="logs-pane">
+      <div class="logs-header">
+        <span class="logs-title">Session Logs</span>
+        <button class="logs-clear" (click)="clearLogs()">Clear</button>
+      </div>
+      <div class="logs-body" *ngIf="logs$ | async as logs">
+        <div *ngIf="logs.length === 0" class="logs-empty">
+          Actions you take (upload, interview, results, voice) will appear here.
+        </div>
+        <div *ngFor="let log of logs" class="log-row" [ngClass]="'log-' + log.level">
+          <span class="log-time">{{ log.timestamp | date:'HH:mm:ss' }}</span>
+          <span class="log-source">{{ log.source }}</span>
+          <span class="log-message">{{ log.message }}</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

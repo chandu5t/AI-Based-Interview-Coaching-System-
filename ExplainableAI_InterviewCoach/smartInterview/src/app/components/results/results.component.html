@@ -1,0 +1,60 @@
+<div class="results-container" *ngIf="result">
+
+    <div class="score-card">
+        <div class="score-circle" [class.pass]="percentage >= 60" [class.fail]="percentage < 60">
+            {{ result.score }} / {{ result.total }}
+        </div>
+        <h2>{{ percentage }}% overall</h2>
+        <p class="feedback" *ngIf="percentage >= 80">Excellent work!</p>
+        <p class="feedback" *ngIf="percentage >= 60 && percentage < 80">Good effort, keep practicing.</p>
+        <p class="feedback" *ngIf="percentage < 60">More practice needed.</p>
+    </div>
+
+    <div class="result-item" *ngFor="let r of answers; let i = index" [class.correct]="r.is_correct"
+        [class.incorrect]="!r.is_correct">
+        <div class="result-header">
+            <span class="badge" [class.badge-correct]="r.is_correct" [class.badge-wrong]="!r.is_correct">
+                {{ r.is_correct ? '✓ Correct' : '✗ Incorrect' }}
+            </span>
+            <span class="q-num">Q{{ i + 1 }}</span>
+        </div>
+        <p class="q-text">{{ r.question }}</p>
+        <div class="answer-block your-answer">
+            <strong>Your answer:</strong> {{ r.user_answer }}
+        </div>
+        <div class="answer-block correct-answer">
+            <strong>Expected answer:</strong> {{ r.correct_answer }}
+        </div>
+        <div class="answer-block per-score">
+            <strong>Score for this answer:</strong>
+            <span>{{ r.score }} / 1</span>
+        </div>
+
+        <div class="audio-analysis" *ngIf="r.audio">
+            <h4>Speaking confidence for this question</h4>
+            <div class="audio-meta">
+                <span class="confidence">Confidence score: {{ r.audio.confidence_score | number:'1.0-1' }}</span>
+                <span class="level">Level: {{ r.audio.level }}</span>
+            </div>
+            <p class="audio-transcript" *ngIf="r.audio.transcript">
+                <strong>Detected transcript:</strong> {{ r.audio.transcript }}
+            </p>
+            <div class="audio-features">
+                <div class="feature">
+                    <span class="label">Speech rate</span>
+                    <span class="value">{{ r.audio.features.speech_rate | number:'1.0-1' }} wps</span>
+                </div>
+                <div class="feature">
+                    <span class="label">Pauses</span>
+                    <span class="value">{{ r.audio.features.pause_count }} (avg {{ r.audio.features.avg_pause | number:'1.1-1' }}s)</span>
+                </div>
+                <div class="feature">
+                    <span class="label">Filler words</span>
+                    <span class="value">{{ r.audio.features.filler_words }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-restart" (click)="restart()">Start Over</button>
+</div>

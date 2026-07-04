@@ -1,0 +1,31 @@
+<div class="interview-container">
+    <div class="interview-header">
+        <div>
+            <h2>Technical Interview</h2>
+            <p class="subtitle">Answer verbally or by typing. Each response is recorded and analysed.</p>
+        </div>
+        <span class="role-badge">{{ interviewService.getJobRole() }}</span>
+    </div>
+
+    <div class="question-card" *ngFor="let q of questions; let i = index">
+        <div class="question-num">Q{{ i + 1 }} / {{ questions.length }}</div>
+        <p class="question-text">{{ q.question }}</p>
+        <textarea [(ngModel)]="answers[q.id]" rows="4" placeholder="Type your answer here..."></textarea>
+
+        <button type="button"
+                class="btn-record"
+                (click)="toggleRecording(q)">
+            {{ voiceAsr.isRecording ? 'Stop Recording' : 'Record Answer' }}
+        </button>
+        <div class="recording-status" *ngIf="audioBlobs[q.id] && !voiceAsr.isRecording">
+            Recording saved for this answer. It will be used for speaking analysis.
+        </div>
+    </div>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <button class="btn-submit" (click)="onSubmit()" [disabled]="loading">
+        <span *ngIf="!loading">Submit Answers</span>
+        <span *ngIf="loading">Evaluating...</span>
+    </button>
+</div>

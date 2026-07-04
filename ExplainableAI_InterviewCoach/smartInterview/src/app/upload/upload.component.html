@@ -1,0 +1,167 @@
+<div class="upload-container page-transition">
+  <div class="hero">
+    <h1 class="hero-title">Ace Your Next <span class="text-gradient">Technical Interview</span></h1>
+    <p class="hero-subtitle">Upload your resume and target role to get tailor-made AI technical questions.</p>
+  </div>
+
+  <div class="glass-card upload-card">
+    <form (ngSubmit)="onSubmit()" #uploadForm="ngForm">
+      
+      <div class="form-group floating-label-group">
+        <input 
+          type="text" 
+          id="jobRole" 
+          name="jobRole" 
+          [(ngModel)]="jobRole" 
+          required 
+          autocomplete="off"
+          placeholder=" ">
+        <label for="jobRole" class="floating-label">Target Job Role</label>
+      </div>
+
+      <div class="form-group">
+        <label class="section-label">Question difficulty</label>
+        <select
+          name="questionLevelPreference"
+          [(ngModel)]="questionLevelPreference"
+          class="select-input">
+          <option value="mixed">Mixed (start from easy and go to hard)</option>
+          <option value="easy">Only Easy questions</option>
+          <option value="medium">Only Medium questions</option>
+          <option value="hard">Only Hard questions</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="section-label">Number of questions</label>
+        <input
+          type="number"
+          name="questionCount"
+          [(ngModel)]="questionCount"
+          class="number-input"
+          min="1"
+          placeholder="Leave empty to use all questions">
+        <small class="hint-text">Set how many questions you want to answer. If left blank, all generated questions will be used.</small>
+      </div>
+
+      <div class="form-group">
+        <label class="section-label">Step 1 · Upload your resume</label>
+        <div class="drop-zone" 
+             [class.dragging]="isDragging"
+             [class.has-file]="!!selectedFile"
+             (dragover)="onDragOver($event)"
+             (dragleave)="onDragLeave($event)"
+             (drop)="onDrop($event)"
+             (click)="fileInput.click()">
+          
+          <input 
+            type="file" 
+            #fileInput 
+            (change)="onFileSelected($event)" 
+            accept=".pdf" 
+            hidden>
+            
+          <div class="drop-content" *ngIf="!selectedFile">
+            <svg class="file-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <p>Drag & drop your resume PDF</p>
+            <span class="browse-text">or click to browse</span>
+          </div>
+
+          <div class="selected-file" *ngIf="selectedFile">
+            <svg class="success-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div class="file-details">
+              <span class="file-name">{{ selectedFile.name }}</span>
+              <span class="file-size">{{ formatFileSize(selectedFile.size) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="section-label optional">Step 2 · (Optional) Upload Job Description</label>
+        <div class="drop-zone secondary" 
+             [class.dragging]="isDraggingJd"
+             [class.has-file]="!!selectedJdFile"
+             (dragover)="onJdDragOver($event)"
+             (dragleave)="onJdDragLeave($event)"
+             (drop)="onJdDrop($event)"
+             (click)="jdFileInput.click()">
+          
+          <input 
+            type="file" 
+            #jdFileInput 
+            (change)="onJdFileSelected($event)" 
+            accept=".pdf" 
+            hidden>
+            
+          <div class="drop-content" *ngIf="!selectedJdFile">
+            <svg class="file-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v4m0 0v4m0-4h4m-4 0H8m-2 8h12M5 8h.01M19 8h.01M5 16h.01M19 16h.01" />
+            </svg>
+            <p>Optionally add the JD PDF for even better questions</p>
+            <span class="browse-text">Drag & drop or click to browse</span>
+          </div>
+
+          <div class="selected-file" *ngIf="selectedJdFile">
+            <svg class="success-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div class="file-details">
+              <span class="file-name">{{ selectedJdFile.name }}</span>
+              <span class="file-size">{{ formatFileSize(selectedJdFile.size) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="error-msg" *ngIf="errorMsg">
+        {{ errorMsg }}
+      </div>
+
+      <button type="submit" class="btn-primary submit-btn" [disabled]="!selectedFile || !jobRole.trim() || isLoading">
+        <span *ngIf="!isLoading">Start Interview</span>
+        <div class="spinner-container" *ngIf="isLoading">
+          <svg class="spinner" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Generating questions...
+        </div>
+      </button>
+    </form>
+  </div>
+
+  <div class="features">
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      </div>
+      <h3>AI-Powered Questions</h3>
+      <p>Tailored specifically to your resume and target role</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+      </div>
+      <h3>Real-time Evaluation</h3>
+      <p>Answer questions in a realistic IDE-like environment</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      </div>
+      <h3>Instant Feedback</h3>
+      <p>Get actionable insights on each of your technical answers</p>
+    </div>
+  </div>
+</div>

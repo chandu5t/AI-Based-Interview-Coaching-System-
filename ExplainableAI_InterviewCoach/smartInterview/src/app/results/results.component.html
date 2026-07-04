@@ -1,0 +1,87 @@
+<div class="results-container page-transition" *ngIf="result && answers.length">
+  <div class="score-header">
+    <div class="circular-progress">
+      <svg viewBox="0 0 200 200">
+        <circle class="bg" cx="100" cy="100" r="90"></circle>
+        <circle class="progress" cx="100" cy="100" r="90" 
+          [class.stroke-success]="result.score >= 70"
+          [class.stroke-warning]="result.score >= 40 && result.score < 70"
+          [class.stroke-danger]="result.score < 40"
+          [style.stroke-dasharray]="getStrokeDasharray()"
+          [style.stroke-dashoffset]="getStrokeDashoffset()"></circle>
+      </svg>
+      <div class="score-text" 
+           [class.text-success]="result.score >= 70"
+           [class.text-warning]="result.score >= 40 && result.score < 70"
+           [class.text-danger]="result.score < 40">
+        <span class="score-value">{{animatedScore}}</span>
+        <span class="score-percent">%</span>
+      </div>
+    </div>
+    <p class="score-message">{{scoreMessage}}</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card glass-card">
+      <div class="stat-label">Correct Answers</div>
+      <div class="stat-value text-success">{{correctCount}}</div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-label">Incorrect Answers</div>
+      <div class="stat-value text-danger">{{incorrectCount}}</div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-label">Overall Score</div>
+      <div class="stat-value">{{result.score}}%</div>
+    </div>
+    <div class="stat-card glass-card" *ngIf="audioResult">
+      <div class="stat-label">Overall Speaking Confidence</div>
+      <div class="stat-value">
+        {{audioResult.confidence_score | number:'1.0-1'}} / 10
+        <span class="confidence-level">({{audioResult.level}})</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="feedback-list">
+    <div class="glass-card result-card" 
+         *ngFor="let ans of answers; let i = index"
+         [class.correct-border]="getFeedbackForQuestion(ans.question_id)?.is_correct"
+         [class.incorrect-border]="!getFeedbackForQuestion(ans.question_id)?.is_correct">
+      
+      <div class="question-header">
+        <div class="q-badge" 
+             [class.bg-success]="getFeedbackForQuestion(ans.question_id)?.is_correct"
+             [class.bg-danger]="!getFeedbackForQuestion(ans.question_id)?.is_correct">
+          {{ i + 1 }}
+        </div>
+        <h3 class="q-text">{{ ans.question }}</h3>
+      </div>
+
+      <!-- ✅ USER ANSWER WITH RED IF INCORRECT -->
+      <div class="answer-block user-answer"
+           [class.incorrect-text]="!getFeedbackForQuestion(ans.question_id)?.is_correct">
+        <div class="block-label"
+             [class.text-danger]="!getFeedbackForQuestion(ans.question_id)?.is_correct">
+          Your Answer
+        </div>
+        <div class="block-content">
+          {{ ans.answer || '(No answer provided)' }}
+        </div>
+      </div>
+
+      <div class="answer-block correct-answer" 
+           *ngIf="!getFeedbackForQuestion(ans.question_id)?.is_correct">
+        <div class="block-label text-success">Expected / Feedback</div>
+        <div class="block-content">
+          {{ getFeedbackForQuestion(ans.question_id)?.correct_answer }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-outline" (click)="startOver()">Start Over</button>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="interview-container">
+    <div class="interview-header">
+        <h2>Technical Interview</h2>
+        <span class="role-badge">{{ interviewService.getJobRole() }}</span>
+    </div>
+
+    <div class="question-card" *ngFor="let q of questions; let i = index">
+        <div class="question-num">Q{{ q.id }}</div>
+        <p class="question-text">{{ q.question }}</p>
+        <textarea [(ngModel)]="answers[q.id]" rows="4" placeholder="Type your answer here...">
+    </textarea>
+    </div>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <button class="btn-submit" (click)="onSubmit()" [disabled]="loading">
+        <span *ngIf="!loading">Submit Answers</span>
+        <span *ngIf="loading">Evaluating...</span>
+    </button>
+</div>
