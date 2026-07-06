@@ -53,7 +53,7 @@ Watch the complete walkthrough of the **Explainable AI-Based Interview Coaching 
 
 <a href="https://youtu.be/eFAgtBS4hUQ">
 
-<img src="./assets/thumbnail.png" width="900" alt="Interview Coaching System Demo">
+<img src="./ExplainableAI_InterviewCoach/assets/thumbnail.png" width="900" alt="Interview Coaching System Demo">
 
 </a>
 
@@ -167,7 +167,7 @@ Performance:
 The system follows a modular architecture combining **Generative AI**, **Speech Processing**, and **Machine Learning** to simulate real technical interviews and provide explainable feedback.
 
 <p align="center">
-  <img src="./assets/architecture.png" width="100%" alt="System Architecture">
+  <img src="./ExplainableAI_InterviewCoach/assets/architecture.png" width="100%" alt="System Architecture">
 </p>
 
 ### Workflow
@@ -186,13 +186,23 @@ The system follows a modular architecture combining **Generative AI**, **Speech 
 # 📂 Project Structure
 
 ```text
-Interview-Coaching-System/
-│── frontend/          # React Application
-│── backend/           # FastAPI APIs
-│── models/            # ML Models
-│── images/            # Screenshots & Diagrams
-│── research_paper/
-│── README.md
+AI-Based-Interview-Coaching-System/
+│
+└── ExplainableAI_InterviewCoach/
+    ├── backend/                    # FastAPI Backend
+    │   ├── main.py                 # Main API Server
+    │   ├── asr_pipeline.py         # Speech Recognition & Feature Extraction
+    │   └── requirements.txt        # Python Dependencies
+    │
+    ├── smartInterview/             # Angular Frontend
+    │   ├── src/                    # Components & Pages
+    │   ├── angular.json
+    │   └── package.json
+    │
+    └── assets/
+        ├── thumbnail.png           # YouTube Thumbnail
+        ├── architecture.png        # System Architecture
+        └── research_paper.pdf      # Research Paper
 ```
 
 ---
@@ -228,37 +238,64 @@ Interview-Coaching-System/
 
 ---
 
-
 # ⚙️ Installation & Setup
 
 ### Prerequisites
 
 - Python 3.10+
 - Node.js 18+
-- MongoDB
 - Git
 
-### Clone Repository
+---
+
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/chandu5t/AI-Based-Interview-Coaching-System-.git
-cd AI-Based-Interview-Coaching-System-
+cd AI-Based-Interview-Coaching-System
+cd ExplainableAI_InterviewCoach
 ```
 
-### Frontend
+---
+
+### 2️⃣ Frontend Setup (Angular)
 
 ```bash
-cd frontend
+cd smartInterview
 npm install
-npm run dev
+ng serve
 ```
 
-### Backend
+The application will be available at:
+
+```
+http://localhost:4200
+```
+
+---
+
+### 3️⃣ Backend Setup (FastAPI)
 
 ```bash
-cd backend
+cd ../backend
 pip install -r requirements.txt
 uvicorn main:app --reload
+```
+
+The backend server will start at:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+### 4️⃣ Configure Environment Variables
+
+Create a `.env` file inside the **backend** directory and add your credentials:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
 > Configure your **Gemini API Key** and database credentials in the `.env` file before running the application.
@@ -279,6 +316,13 @@ uvicorn main:app --reload
 | MLP | 0.472 | 0.932 |
 | Random Forest | 0.477 | 0.928 |
 | Ridge Regression | 0.676 | 0.887 |
+
+---
+## 📄 Research Paper
+
+**"Explainable AI-Based Interview Coaching System"**
+
+📄 [Read the Research Paper](./ExplainableAI_InterviewCoach/assets/research_paper.pdf) 
 
 ---
 
