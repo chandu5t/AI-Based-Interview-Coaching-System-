@@ -65,27 +65,7 @@ Watch the complete walkthrough of the **Explainable AI-Based Interview Coaching 
 
 </p>
 
----
 
-# 📸 Application Preview
-
-<p align="center">
-
-<img src="./images/home.png" width="46%">
-<img src="./images/interview.png" width="46%">
-
-</p>
-
-<p align="center">
-
-<img src="./images/report.png" width="46%">
-<img src="./images/dashboard.png" width="46%">
-
-</p>
-
-> **Note:** Replace the image paths with your uploaded screenshots.
-
----
 
 # 🏆 Badges
 
@@ -167,7 +147,7 @@ Performance:
 The system follows a modular architecture combining **Generative AI**, **Speech Processing**, and **Machine Learning** to simulate real technical interviews and provide explainable feedback.
 
 <p align="center">
-  <img src="./ExplainableAI_InterviewCoach/assets/architecture.png" width="100%" alt="System Architecture">
+  <img src="./ExplainableAI_InterviewCoach/assets/architecture.jpeg" width="100%" alt="System Architecture">
 </p>
 
 ### Workflow
